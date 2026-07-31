@@ -1,11 +1,11 @@
-package config
+package main
 
 import (
 	"errors"
 	"fmt"
 )
 
-func HandlerLogin(s *State, cmd command) error {
+func handlerLogin(s *state, cmd command) error {
 	// Check the existance of arguments
 	if len(cmd.arguments) == 0 {
 		return errors.New("No arguments passed")
@@ -13,7 +13,7 @@ func HandlerLogin(s *State, cmd command) error {
 
 	// Set the username
 	username := cmd.arguments[0]
-	err := s.Config.SetUser(username)
+	err := s.config.SetUser(username)
 	if err != nil {
 		return err
 	}

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gator/internal/config"
+	"os"
 )
 
 func main() {
@@ -10,9 +11,19 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	state := config.State{
-		Config: &configData,
+	state := state{
+		config: &configData,
 	}
-	cmds := config.StartCommands()
-	cmds.register("login", config.HandlerLogin())
+	cmds := StartCommands()
+	cmds.register("login", handlerLogin)
+	userArgs := os.Args
+	if len(userArgs) < 2 {
+		fmt.Println("Not enough arguments provided")
+		os.Exit(1)
+	}
+	userCmd := GetUserCommand(userArgs)
+	err = cmds.run(&state, userCmd)
+	if err != nil {
+		os.Exit(1)
+	}
 }

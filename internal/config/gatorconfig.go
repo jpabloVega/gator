@@ -9,6 +9,6 @@ func getConfigFilePath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	gatorConfig += "/gatorconfig.json"
+	gatorConfig += "/.gatorconfig.json"
 	return gatorConfig, nil
 }
