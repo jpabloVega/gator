@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 )
@@ -11,9 +12,16 @@ func handlerLogin(s *state, cmd command) error {
 		return errors.New("No arguments passed")
 	}
 
-	// Set the username
 	username := cmd.arguments[0]
-	err := s.config.SetUser(username)
+	// Check if user exists in the db
+	contx := context.Background()
+	_, err := s.db.GetUser(contx, username)
+	if err != nil {
+		return errors.New("User doesnt exists")
+	}
+
+	// Set the username
+	err = s.config.SetUser(username)
 	if err != nil {
 		return err
 	}
