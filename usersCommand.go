@@ -14,11 +14,9 @@ func getUsers(s *state, cmd command) error {
 	}
 
 	// List users
-	currName := s.config.Current_user_name
-	fmt.Println(currName)
 	for _, userData := range usersData {
 		fmt.Printf("* %s", userData.Name)
-		if userData.Name == currName {
+		if userData.Name == s.config.Current_user_name {
 			fmt.Print(" (current)")
 		}
 		fmt.Println()

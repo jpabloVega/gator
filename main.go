@@ -3,9 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"gator/internal/api"
 	"gator/internal/config"
 	"gator/internal/database"
 	"os"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -17,7 +19,6 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	fmt.Printf("DEBUG loaded config: %+v\n", configData)
 
 	// Get database
 	dBData, err := sql.Open("postgres", configData.Db_url)
@@ -26,11 +27,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Get client
+	client := api.NewClient(time.Duration(5000))
+
 	// Convert db data into querry
 	db := database.New(dBData)
 
 	// Create state
 	state := state{
+		client: &client,
 		db:     db,
 		config: &configData,
 	}
@@ -41,6 +46,7 @@ func main() {
 	cmds.register("register", registerUser)
 	cmds.register("reset", resetTable)
 	cmds.register("users", getUsers)
+	cmds.register("agg", aggregator)
 	userArgs := os.Args
 	if len(userArgs) < 2 {
 		fmt.Println("Not enough arguments provided")

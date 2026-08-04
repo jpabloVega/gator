@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gator/internal/api"
 	"gator/internal/config"
 	"gator/internal/database"
 )
@@ -11,6 +12,7 @@ type command struct {
 }
 
 type state struct {
+	client *api.Client
 	db     *database.Queries
 	config *config.Config
 }
