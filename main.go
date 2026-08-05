@@ -28,7 +28,7 @@ func main() {
 	}
 
 	// Get client
-	client := api.NewClient(time.Duration(5000))
+	client := api.NewClient(time.Duration(5 * time.Second))
 
 	// Convert db data into querry
 	db := database.New(dBData)
@@ -47,6 +47,8 @@ func main() {
 	cmds.register("reset", resetTable)
 	cmds.register("users", getUsers)
 	cmds.register("agg", aggregator)
+	cmds.register("addfeed", addFeed)
+	cmds.register("feeds", feeds)
 	userArgs := os.Args
 	if len(userArgs) < 2 {
 		fmt.Println("Not enough arguments provided")

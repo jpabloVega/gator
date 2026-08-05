@@ -11,6 +11,10 @@ func resetTable(s *state, cmd command) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Users deleted")
+	err = s.db.DeleteFeeds(contx)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Tables data deleted")
 	return nil
 }
