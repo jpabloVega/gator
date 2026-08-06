@@ -27,7 +27,7 @@ func handlerLogin(s *state, cmd command) error {
 	}
 
 	// Report the new user
-	fmt.Printf("Added user: %s\n", username)
+	fmt.Printf("Logged in as: %s\n", username)
 
 	return nil
 }

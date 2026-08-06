@@ -47,8 +47,11 @@ func main() {
 	cmds.register("reset", resetTable)
 	cmds.register("users", getUsers)
 	cmds.register("agg", aggregator)
-	cmds.register("addfeed", addFeed)
+	cmds.register("addfeed", mwLoggedIn(addFeed))
 	cmds.register("feeds", feeds)
+	cmds.register("follow", mwLoggedIn(follow))
+	cmds.register("following", mwLoggedIn(following))
+	cmds.register("unfollow", mwLoggedIn(unfollow))
 	userArgs := os.Args
 	if len(userArgs) < 2 {
 		fmt.Println("Not enough arguments provided")

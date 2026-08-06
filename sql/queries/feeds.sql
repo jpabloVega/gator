@@ -18,3 +18,8 @@ INNER JOIN users
 
 -- name: DeleteFeeds :exec
 DELETE FROM feeds;
+
+-- name: GetFeedFromUrl :one
+SELECT *
+FROM feeds
+WHERE url = $1;

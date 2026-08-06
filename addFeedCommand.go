@@ -10,18 +10,14 @@ import (
 	"github.com/google/uuid"
 )
 
-func addFeed(s *state, cmd command) error {
+func addFeed(s *state, cmd command, user database.User) error {
 	// Check for expected arguments
 	if len(cmd.arguments) < 2 {
 		return errors.New("Correct syntax: go run . addfeed <feed name> <url>")
 	}
 
-	// Create context and get current user
+	// Create context
 	contx := context.Background()
-	user, err := s.db.GetUser(contx, s.config.Current_user_name)
-	if err != nil {
-		return err
-	}
 
 	// Get values to pass to the db
 	feedUUID := uuid.New()
@@ -40,12 +36,26 @@ func addFeed(s *state, cmd command) error {
 		UserID:    user_id,
 	}
 
-	// Add to db
+	// Add feed to db
 	feed, err := s.db.CreateFeed(contx, feedData)
 	if err != nil {
 		return err
 	}
 
+	// Add feed follow
+	feedFollowData := database.CreateFeedFollowParams{
+		ID:        uuid.New(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+		UserID:    user_id,
+		FeedID:    feed.ID,
+	}
+	_, err = s.db.CreateFeedFollow(contx, feedFollowData)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("%s added feed %v\n", user.Name, feed.Name)
 	fmt.Printf("%+v\n", feed)
 	return nil
 }
