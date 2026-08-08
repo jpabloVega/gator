@@ -15,6 +15,12 @@ Config file set up
         By default the username is the same as your pc username
         If you didnt added a postgres password during installation you can leave it blank
 
+Initialize the database
+- From a cmd move to the gator/sql/schema folder
+- Copy this command
+    goose postgres "postgres://<username>:<password>@localhost:5432/gator" up
+        The username and password are the same as above
+
 How to use
 - From a cmd type 'gator <command>'
 
@@ -42,7 +48,9 @@ Commands
 - reset
     Delete all records, permanent
     
-
+Example:
+gator register Pablo
+    Creates and login user Pablo
 
 
 
