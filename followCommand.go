@@ -13,7 +13,7 @@ import (
 func follow(s *state, cmd command, user database.User) error {
 	// Check for arguments
 	if len(cmd.arguments) < 1 {
-		return errors.New("Correct syntaxis: go run . follow <url>")
+		return errors.New("Correct syntaxis: gator follow <url>")
 	}
 	contx := context.Background()
 

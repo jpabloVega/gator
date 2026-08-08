@@ -7,6 +7,7 @@ package database
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -97,7 +98,7 @@ func (q *Queries) DeleteFollow(ctx context.Context, arg DeleteFollowParams) erro
 }
 
 const getFeedFollowsForUser = `-- name: GetFeedFollowsForUser :many
-SELECT feeds.id, feeds.created_at, feeds.updated_at, feeds.name, feeds.url, feeds.user_id, users.name AS user_name, feeds.name AS feed_name
+SELECT feeds.id, feeds.created_at, feeds.updated_at, feeds.name, feeds.url, feeds.last_fetched_at, feeds.user_id, users.name AS user_name, feeds.name AS feed_name
 FROM feed_follows
 INNER JOIN users
     ON feed_follows.user_id = users.id
@@ -107,14 +108,15 @@ WHERE users.name = $1
 `
 
 type GetFeedFollowsForUserRow struct {
-	ID        uuid.UUID
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Name      string
-	Url       string
-	UserID    uuid.UUID
-	UserName  string
-	FeedName  string
+	ID            uuid.UUID
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+	Name          string
+	Url           string
+	LastFetchedAt sql.NullTime
+	UserID        uuid.UUID
+	UserName      string
+	FeedName      string
 }
 
 func (q *Queries) GetFeedFollowsForUser(ctx context.Context, name string) ([]GetFeedFollowsForUserRow, error) {
@@ -132,6 +134,7 @@ func (q *Queries) GetFeedFollowsForUser(ctx context.Context, name string) ([]Get
 			&i.UpdatedAt,
 			&i.Name,
 			&i.Url,
+			&i.LastFetchedAt,
 			&i.UserID,
 			&i.UserName,
 			&i.FeedName,

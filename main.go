@@ -52,6 +52,7 @@ func main() {
 	cmds.register("follow", mwLoggedIn(follow))
 	cmds.register("following", mwLoggedIn(following))
 	cmds.register("unfollow", mwLoggedIn(unfollow))
+	cmds.register("browse", mwLoggedIn(browse))
 	userArgs := os.Args
 	if len(userArgs) < 2 {
 		fmt.Println("Not enough arguments provided")

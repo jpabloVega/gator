@@ -19,6 +19,10 @@ func resetTable(s *state, cmd command) error {
 	if err != nil {
 		return err
 	}
+	err = s.db.DeletePosts(contx)
+	if err != nil {
+		return err
+	}
 	fmt.Println("All data deleted")
 	return nil
 }
